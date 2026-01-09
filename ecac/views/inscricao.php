@@ -1,5 +1,18 @@
+<?php
+session_start();
+
+$user = $_SESSION["user_logado"] ?? null;
+
+$id_usuario = $user["id"] ?? null;
+$nome_usuario = $user["nome"] ?? null;
+$email = $user["email"] ?? null;
+$foto = $user["foto"] ?? null;
+
+$logado = (bool) $user;
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +21,7 @@
   <link rel="website icon" type="png" href="../assets/img/logo.png">
   <link rel="stylesheet" href="../assets/css/incrição.css">
 </head>
+
 <body>
   <header>
     <div class="header-content">
@@ -15,8 +29,35 @@
         <h1>Encontro Carioca de Alimentação Coletiva</h1>
       </a>
       <div class="header-buttons">
-        <a href="./login.php"><button class="btn-login">Login</button></a>
-        <a href="./cadastro.php"><button class="btn-cadastro">Cadastro</button></a>
+        <?php if (!$logado): ?>
+          <a href="./login.php"><button class="btn-login">Login</button></a>
+          <a href="./cadastro.php"><button class="btn-cadastro">Cadastro</button></a>
+        <?php else: ?>
+          <?php
+          $caminho_perfil = (!empty($foto))
+            ? "../assets/uploads/fotos_perfil/" . $foto
+            : "../assets/img/default-user.png";
+          ?>
+          <div class="user-dropdown">
+            <div class="user-profile" onclick="ativarDropdown()">
+              <div class="img-wrapper">
+                <img src="<?php echo $caminho_perfil; ?>" alt="Perfil" class="img-perfil-nav">
+              </div>
+              <i class="fa fa-chevron-down arrow-icon"></i>
+            </div>
+            <div id="dropdownMenu" class="dropdown-content">
+              <div class="dropdown-header">
+                <strong>Olá, <?php echo htmlspecialchars($nome_usuario); ?>!</strong>
+              </div>
+              <a href="./perfil.php"><i class="fa fa-user"></i> Meu Perfil</a>
+              <a href="./minhas-inscricoes.php"><i class="fa fa-ticket"></i> Inscrições</a>
+              <hr>
+              <a href="../controllers/AutentController.php?acao=logout" class="logout-item">
+                <i class="fa fa-sign-out-alt"></i> Sair
+              </a>
+            </div>
+          </div>
+        <?php endif; ?>
       </div>
     </div>
   </header>
@@ -27,7 +68,7 @@
         <strong>E.C.A.C</strong><br>
       </div>
       <a href="./index.php">
-        <div class="sidebar-item active"><i class="fa fa-home"></i> Início</div>
+        <div class="sidebar-item"><i class="fa fa-home"></i> Início</div>
       </a>
       <a href="./eventos.php">
         <div class="sidebar-item"><i class="fa fa-calendar-check"></i> Evento</div>
@@ -42,7 +83,7 @@
         <div class="sidebar-item"><i class="fa fa-upload"></i> Submissão</div>
       </a>
       <a href="./inscricao.php">
-        <div class="sidebar-item"><i class="fa fa-id-card"></i> Inscrição</div>
+        <div class="sidebar-item active"><i class="fa fa-id-card"></i> Inscrição</div>
       </a>
       <a href="./arquivos.php">
         <div class="sidebar-item"><i class="fa fa-download"></i> Arquivos</div>
@@ -63,7 +104,8 @@
             <div class="card-body">
               <h3>Palestra: Gestão de Estoque</h3>
               <p><i class="fa fa-calendar"></i> Período de inscrição: <strong>01/05/2024</strong> até
-                <strong>31/05/2024</strong></p>
+                <strong>31/05/2024</strong>
+              </p>
             </div>
             <div class="card-footer">
               <button class="btn-inscrever">INSCREVA-SE</button>
@@ -74,7 +116,8 @@
             <div class="card-body">
               <h3>E-Book: Tendências Nutricionais</h3>
               <p><i class="fa fa-calendar"></i> Período de inscrição: <strong>01/04/2024</strong> até
-                <strong>30/04/2024</strong></p>
+                <strong>30/04/2024</strong>
+              </p>
             </div>
             <div class="card-footer">
               <button class="btn-inscrever">INSCREVA-SE</button>
@@ -85,7 +128,8 @@
             <div class="card-body">
               <h3>Artigo: Segurança Alimentar e Coletiva</h3>
               <p><i class="fa fa-calendar"></i> Período de inscrição: <strong>01/12/2023</strong> até
-                <strong>11/01/2024</strong></p>
+                <strong>11/01/2024</strong>
+              </p>
               <div class="alert">
                 O período de inscrições para esse evento já acabou!
               </div>
@@ -133,5 +177,7 @@
       © 2025 Encontro Carioca de Alimentação Coletiva | Política de Privacidade
     </div>
   </footer>
+  <script src="../assets/js/inscricao.js"></script>
 </body>
+
 </html>

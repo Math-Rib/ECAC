@@ -1,13 +1,27 @@
+<?php
+session_start();
+
+$user = $_SESSION["user_logado"] ?? null;
+
+$id_usuario = $user["id"] ?? null;
+$nome_usuario = $user["nome"] ?? null;
+$email = $user["email"] ?? null;
+$foto = $user["foto"] ?? null;
+
+$logado = (bool) $user;
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Encontro Carioca de Alimentação Coletiva</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="website icon" type="png" href="../assets/img/logo.png">
-  <link rel="stylesheet" href="../assets/css/home.css">
+  <link rel="stylesheet" href="../assets/css/index.css">
 </head>
+
 <body>
   <header>
     <div class="header-content">
@@ -15,8 +29,35 @@
         <h1>Encontro Carioca de Alimentação Coletiva</h1>
       </a>
       <div class="header-buttons">
-        <a href="./login.php"><button class="btn-login">Login</button></a>
-        <a href="./cadastro.php"><button class="btn-cadastro">Cadastro</button></a>
+        <?php if (!$logado): ?>
+          <a href="./login.php"><button class="btn-login">Login</button></a>
+          <a href="./cadastro.php"><button class="btn-cadastro">Cadastro</button></a>
+        <?php else: ?>
+          <?php
+          $caminho_perfil = (!empty($foto))
+            ? "../assets/uploads/fotos_perfil/" . $foto
+            : "../assets/img/default-user.png";
+          ?>
+          <div class="user-dropdown">
+            <div class="user-profile" onclick="ativarDropdown()">
+              <div class="img-wrapper">
+                <img src="<?php echo $caminho_perfil; ?>" alt="Perfil" class="img-perfil-nav">
+              </div>
+              <i class="fa fa-chevron-down arrow-icon"></i>
+            </div>
+            <div id="dropdownMenu" class="dropdown-content">
+              <div class="dropdown-header">
+                <strong>Olá, <?php echo htmlspecialchars($nome_usuario); ?>!</strong>
+              </div>
+              <a href="./perfil.php"><i class="fa fa-user"></i> Meu Perfil</a>
+              <a href="./minhas-inscricoes.php"><i class="fa fa-ticket"></i> Inscrições</a>
+              <hr>
+              <a href="../controllers/AutentController.php?acao=logout" class="logout-item">
+                <i class="fa fa-sign-out-alt"></i> Sair
+              </a>
+            </div>
+          </div>
+        <?php endif; ?>
       </div>
     </div>
   </header>
@@ -59,15 +100,14 @@
         </div>
         <!-- TEXTO (lado direito) -->
         <div class="banner-text">
-          <p style="font-size:16px;">
-            Uma experiência única para profissionais de nutrição e gastronomia!
-          </p>
           <h2>
             Encontro Carioca<br>
             de Alimentação Coletiva
           </h2>
-          <p>10 a 12 de Janeiro | Rio de Janeiro</p>
-          <button class="btn">GARANTA SUA VAGA</button>
+          <p>
+            Uma experiência única para profissionais de nutrição e gastronomia!
+          </p>
+          <a href="./inscricao.php" class="btn-inscricao" >GARANTA SUA VAGA</a>
         </div>
       </div>
       <section class="section">
@@ -153,4 +193,5 @@
   </footer>
   <script src="../assets/js/index.js"></script>
 </body>
+
 </html>

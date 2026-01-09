@@ -12,7 +12,7 @@
 <body>
   <header>
     <div class="header-content">
-      <a href="./views/index.php">
+      <a href="./index.php">
         <h1>Encontro Carioca de Alimentação Coletiva</h1>
       </a>
       <div class="header-buttons">
@@ -28,7 +28,7 @@
         <strong>E.C.A.C</strong><br>
       </div>
       <a href="./index.php">
-        <div class="sidebar-item active"><i class="fa fa-home"></i> Início</div>
+        <div class="sidebar-item"><i class="fa fa-home"></i> Início</div>
       </a>
       <a href="./eventos.php">
         <div class="sidebar-item"><i class="fa fa-calendar-check"></i> Evento</div>
@@ -46,7 +46,7 @@
         <div class="sidebar-item"><i class="fa fa-id-card"></i> Inscrição</div>
       </a>
       <a href="./arquivos.php">
-        <div class="sidebar-item"><i class="fa fa-download"></i> Arquivos</div>
+        <div class="sidebar-item active"><i class="fa fa-download"></i> Arquivos</div>
       </a>
       <a href="./palestrantes.php">
         <div class="sidebar-item"><i class="fa fa-person"></i> Palestrantes</div>

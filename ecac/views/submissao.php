@@ -1,3 +1,15 @@
+<?php
+session_start();
+
+$user = $_SESSION["user_logado"] ?? null;
+
+$id_usuario = $user["id"] ?? null;
+$nome_usuario = $user["nome"] ?? null;
+$email = $user["email"] ?? null;
+$foto = $user["foto"] ?? null;
+
+$logado = (bool) $user;
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -15,8 +27,35 @@
         <h1>Encontro Carioca de Alimentação Coletiva</h1>
       </a>
       <div class="header-buttons">
-        <a href="./login.php"><button class="btn-login">Login</button></a>
-        <a href="./cadastro.php"><button class="btn-cadastro">Cadastro</button></a>
+        <?php if (!$logado): ?>
+          <a href="./login.php"><button class="btn-login">Login</button></a>
+          <a href="./cadastro.php"><button class="btn-cadastro">Cadastro</button></a>
+        <?php else: ?>
+          <?php
+          $caminho_perfil = (!empty($foto))
+            ? "../assets/uploads/fotos_perfil/" . $foto
+            : "../assets/img/default-user.png";
+          ?>
+          <div class="user-dropdown">
+            <div class="user-profile" onclick="ativarDropdown()">
+              <div class="img-wrapper">
+                <img src="<?php echo $caminho_perfil; ?>" alt="Perfil" class="img-perfil-nav">
+              </div>
+              <i class="fa fa-chevron-down arrow-icon"></i>
+            </div>
+            <div id="dropdownMenu" class="dropdown-content">
+              <div class="dropdown-header">
+                <strong>Olá, <?php echo htmlspecialchars($nome_usuario); ?>!</strong>
+              </div>
+              <a href="./perfil.php"><i class="fa fa-user"></i> Meu Perfil</a>
+              <a href="./minhas-inscricoes.php"><i class="fa fa-ticket"></i> Inscrições</a>
+              <hr>
+              <a href="../controllers/AutentController.php?acao=logout" class="logout-item">
+                <i class="fa fa-sign-out-alt"></i> Sair
+              </a>
+            </div>
+          </div>
+        <?php endif; ?>
       </div>
     </div>
   </header>
@@ -27,7 +66,7 @@
         <strong>E.C.A.C</strong><br>
       </div>
       <a href="./index.php">
-        <div class="sidebar-item active"><i class="fa fa-home"></i> Início</div>
+        <div class="sidebar-item"><i class="fa fa-home"></i> Início</div>
       </a>
       <a href="./eventos.php">
         <div class="sidebar-item"><i class="fa fa-calendar-check"></i> Evento</div>
@@ -39,7 +78,7 @@
         <div class="sidebar-item"><i class="fa fa-shield"></i> Normas</div>
       </a>
       <a href="./submissao.php">
-        <div class="sidebar-item"><i class="fa fa-upload"></i> Submissão</div>
+        <div class="sidebar-item active"><i class="fa fa-upload"></i> Submissão</div>
       </a>
       <a href="./inscricao.php">
         <div class="sidebar-item"><i class="fa fa-id-card"></i> Inscrição</div>
@@ -125,5 +164,6 @@
       © 2025 Encontro Carioca de Alimentação Coletiva | Política de Privacidade
     </div>
   </footer>
+  <script src="../assets/js/submissao.js"></script>
 </body>
 </html>
